@@ -6,6 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <data class=".databinding.ActivityMainBinding"
+        tools:ignore="MissingConstraints">
+        <variable android:name="api_request"/>
+    </data>
+
     <TextView
         android:id="@+id/txtValueLabel"
         android:layout_width="wrap_content"
@@ -61,6 +66,7 @@
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textImeMultiLine"
+        android:text="@{api_request}"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtValueLabel" />
 
