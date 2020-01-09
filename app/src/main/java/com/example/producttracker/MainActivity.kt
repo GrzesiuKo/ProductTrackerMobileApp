@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
         btnTest.setOnClickListener{
             run{
                 request_api("https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22")
+                txtMulti.setText(api_response)
             }
         }
     }
@@ -70,10 +71,10 @@ class MainActivity : AppCompatActivity() {
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {}
             override fun onResponse(call: Call, response: Response) {
-                api_response = response.body?.string().toString();
+                api_response = response.body?.string().toString()
             }
         })
-        txtHTML.text = api_response
+
     }
 
 }
