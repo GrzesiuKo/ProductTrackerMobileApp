@@ -7,9 +7,13 @@ import android.os.PersistableBundle
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.*
+import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
     var scannedResult: String = ""
+    private val client = OkHttpClient()
+    var api_response : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,6 +22,11 @@ class MainActivity : AppCompatActivity() {
         btnScan.setOnClickListener{
             run {
                 IntentIntegrator(this@MainActivity).initiateScan();
+            }
+        }
+        btnTest.setOnClickListener{
+            run{
+                request_api("https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22")
             }
         }
     }
@@ -51,6 +60,20 @@ class MainActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString("scannedResult", scannedResult)
         super.onSaveInstanceState(outState)
+    }
+
+    fun request_api(url: String) {
+        val request = Request.Builder()
+            .url(url)
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {}
+            override fun onResponse(call: Call, response: Response) {
+                api_response = response.body?.string().toString();
+            }
+        })
+        txtHTML.text = api_response
     }
 
 }
