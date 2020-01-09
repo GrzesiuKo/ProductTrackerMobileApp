@@ -1,14 +1,18 @@
 package com.example.producttracker
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
+import androidx.annotation.RequiresApi
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class MainActivity : AppCompatActivity() {
     var scannedResult: String = ""
@@ -26,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         }
         btnTest.setOnClickListener{
             run{
-                request_api("https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22")
+                get_request_api("https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22")
                 txtMulti.setText(api_response)
             }
         }
@@ -63,9 +67,12 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    fun request_api(url: String) {
+    fun get_request_api(url: String) {
+        val payload = "TEST 1998"
+        val requestBody = payload.toRequestBody();
         val request = Request.Builder()
             .url(url)
+            .method("POST", requestBody)
             .build()
 
         client.newCall(request).enqueue(object : Callback {
