@@ -1,23 +1,22 @@
 package com.example.producttracker
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.annotation.RequiresApi
+import com.google.gson.Gson
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.IOException
-import java.net.HttpURLConnection
-import java.net.URL
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class MainActivity : AppCompatActivity() {
     var scannedResult: String = ""
     private val client = OkHttpClient()
     var api_response : String = ""
+    val url_hreoku_post = "https://shrouded-citadel-96744.herokuapp.com/api/contacts"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,8 +29,7 @@ class MainActivity : AppCompatActivity() {
         }
         btnTest.setOnClickListener{
             run{
-                get_request_api("https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=b6907d289e10d714a6e88b30761fae22")
-                txtMulti.setText(api_response)
+                create_contact(url_hreoku_post,"Moriz")
             }
         }
     }
@@ -45,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             if(result.contents != null){
                 scannedResult = result.contents
                 txtValue.text = scannedResult
+                create_contact(url_hreoku_post, scannedResult)
             } else {
                 txtValue.text = "scan failed"
             }
@@ -67,13 +66,13 @@ class MainActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
     }
 
-    fun get_request_api(url: String) {
-        val payload = "TEST 1998"
-        val requestBody = payload.toRequestBody();
+    fun post_request_api(url: String, message: String) {
+        val requestBody = message.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = Request.Builder()
             .url(url)
             .method("POST", requestBody)
             .build()
+        txtValue.setText(requestBody.toString())
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {}
@@ -82,6 +81,14 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
+    }
+
+    fun create_contact(url:String, name: String){
+        val contact = Contact(name)
+        val gson = Gson()
+        val request = gson.toJson(contact)
+        post_request_api(url, request)
+        txtMulti.setText(api_response)
     }
 
 }
