@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
                 scannedResult = result.contents
                 txtValue.text = scannedResult
                 create_contact(url_hreoku_post, scannedResult)
+                IntentIntegrator(this@MainActivity).initiateScan()
             } else {
                 txtValue.text = "scan failed"
             }
