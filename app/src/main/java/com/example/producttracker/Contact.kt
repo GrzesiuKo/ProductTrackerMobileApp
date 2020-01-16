@@ -1,6 +1,4 @@
 package com.example.producttracker
 
-class Contact(var barcode: String) {
-    lateinit var description: String
-
+class Contact(var barcode: String, var description: String) {
 }

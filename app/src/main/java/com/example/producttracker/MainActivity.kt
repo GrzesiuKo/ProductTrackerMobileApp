@@ -42,11 +42,8 @@ class MainActivity : AppCompatActivity() {
 
             if(result.contents != null){
                 scannedResult = result.contents
-                txtValue.text = scannedResult
                 create_contact(url_hreoku_post, scannedResult)
                 IntentIntegrator(this@MainActivity).initiateScan()
-            } else {
-                txtValue.text = "scan failed"
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -58,7 +55,6 @@ class MainActivity : AppCompatActivity() {
 
         savedInstanceState?.let {
             scannedResult = it.getString("scannedResult").toString()
-            txtValue.text = scannedResult
         }
     }
 
@@ -73,7 +69,6 @@ class MainActivity : AppCompatActivity() {
             .url(url)
             .method("POST", requestBody)
             .build()
-        txtValue.setText(requestBody.toString())
 
         client.newCall(request).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {}
@@ -85,11 +80,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun create_contact(url:String, name: String){
-        val contact = Contact(name)
+        val contact = Contact(name, " ")
         val gson = Gson()
         val request = gson.toJson(contact)
         post_request_api(url, request)
-        txtMulti.setText(api_response)
     }
 
 }

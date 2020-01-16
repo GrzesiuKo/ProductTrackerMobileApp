@@ -6,56 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/txtValueLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="262dp"
-        android:text="Scanned Value: "
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txtValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="116dp"
-        android:layout_marginEnd="16dp"
-        android:text="{{please scan first}}"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Button
         android:id="@+id/btnScan"
-        android:layout_width="88dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="174dp"
-        android:text="Scan"
+        android:layout_width="162dp"
+        android:layout_height="103dp"
+        android:layout_marginTop="188dp"
+        android:layout_marginEnd="124dp"
+        android:background="@android:color/holo_green_dark"
+        android:text="INSERT"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtValue" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnTest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="172dp"
-        android:text="Test"
+        android:layout_width="153dp"
+        android:layout_height="84dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="128dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="DELETE"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnScan" />
 
-    <EditText
-        android:id="@+id/txtMulti"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="68dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textImeMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTest" />
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="124dp"
+        android:clickable="false"
+        android:editable="false"
+        android:text="Product Tracker"
+        app:layout_constraintBottom_toTopOf="@+id/btnScan"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
