@@ -13,10 +13,14 @@ import java.io.IOException
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class MainActivity : AppCompatActivity() {
+    val INSERT_MODE = "INSERT_MODE"
+    val DELETE_MODE = "DELETE_MODE"
+    var mode: String = ""
     var scannedResult: String = ""
     private val client = OkHttpClient()
     var api_response : String = ""
     val url_hreoku_post = "https://shrouded-citadel-96744.herokuapp.com/api/contacts"
+    val url_hreoku_delete_barcode = "https://shrouded-citadel-96744.herokuapp.com/api/contacts/delete/"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,12 +28,14 @@ class MainActivity : AppCompatActivity() {
 
         btnScan.setOnClickListener{
             run {
+                mode = INSERT_MODE
                 IntentIntegrator(this@MainActivity).initiateScan();
             }
         }
-        btnTest.setOnClickListener{
+        btnDelete.setOnClickListener{
             run{
-                create_contact(url_hreoku_post,"Moriz")
+                mode = DELETE_MODE
+                IntentIntegrator(this@MainActivity).initiateScan();
             }
         }
     }
@@ -42,7 +48,12 @@ class MainActivity : AppCompatActivity() {
 
             if(result.contents != null){
                 scannedResult = result.contents
-                create_contact(url_hreoku_post, scannedResult)
+
+                if(mode == INSERT_MODE){
+                    create_contact(url_hreoku_post, scannedResult)
+                }else if (mode == DELETE_MODE){
+                    delete_contact_by_barcode(url_hreoku_delete_barcode, scannedResult)
+                }
                 IntentIntegrator(this@MainActivity).initiateScan()
             }
         } else {
@@ -84,6 +95,25 @@ class MainActivity : AppCompatActivity() {
         val gson = Gson()
         val request = gson.toJson(contact)
         post_request_api(url, request)
+    }
+
+    fun delete_contact_by_barcode(url:String, barcode: String){
+        var result = "$url$barcode"
+        delete_barcode_request_api(result)
+    }
+
+    private fun delete_barcode_request_api(result: String) {
+        val request = Request.Builder()
+            .url(result)
+            .delete()
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {}
+            override fun onResponse(call: Call, response: Response) {
+                api_response = response.body?.string().toString()
+            }
+        })
     }
 
 }
