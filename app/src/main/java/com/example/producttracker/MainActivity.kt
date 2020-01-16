@@ -80,7 +80,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun create_contact(url:String, name: String){
-        val contact = Contact(name, " ")
+        val contact = Contact(name, " ", 1)
         val gson = Gson()
         val request = gson.toJson(contact)
         post_request_api(url, request)
